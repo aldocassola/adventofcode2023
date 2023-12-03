@@ -19,12 +19,12 @@ fn main() {
             .chars()
             .find(|a| a.is_digit(10))
             .and_then(|a| a.to_digit(10))
-            .unwrap();
+            .expect("first digit");
         let second_digit = line
             .chars()
             .rfind(|a| a.is_digit(10))
             .and_then(|a| a.to_digit(10))
-            .unwrap();
+            .expect("second digit");
         total += first_digit * 10 + second_digit;
     }
 
