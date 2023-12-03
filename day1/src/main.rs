@@ -3,7 +3,7 @@ use std::fs;
 use std::process;
 
 fn main() {
-    let args : Vec<String> = env::args().collect();
+    let args: Vec<String> = env::args().collect();
 
     if args.len() < 2 {
         eprintln!("not enough arguments");
@@ -15,9 +15,17 @@ fn main() {
     let mut total = 0;
 
     for line in contents.lines() {
-        let first_digit = line.find(char::is_numeric).expect("finding first digit");
-        let last_digit = line.rfind(char::is_numeric).expect("finding last digit");
-        total += first_digit * 10 + last_digit;
+        let first_digit = line
+            .chars()
+            .find(|a| a.is_digit(10))
+            .and_then(|a| a.to_digit(10))
+            .unwrap();
+        let second_digit = line
+            .chars()
+            .rfind(|a| a.is_digit(10))
+            .and_then(|a| a.to_digit(10))
+            .unwrap();
+        total += first_digit * 10 + second_digit;
     }
 
     println!("{}", total);
