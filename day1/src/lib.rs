@@ -1,6 +1,6 @@
 use std::iter;
 
-pub fn run1(input: &str) -> u32 {
+pub fn extract_digit_total(input: &str) -> u32 {
     let mut total = 0;
 
     for line in input.lines() {
@@ -20,7 +20,7 @@ pub fn run1(input: &str) -> u32 {
     total
 }
 
-pub fn run2(input: &str) -> u32 {
+pub fn extract_digit_word_total(input: &str) -> u32 {
     let mut total = 0;
 
     for ln in input.lines() {
@@ -40,7 +40,7 @@ pub fn run2(input: &str) -> u32 {
                     Some(_) => {
                         for (pos, w) in names.iter().enumerate() {
                             if substr.starts_with(w) {
-                                idx += w.len();
+                                idx += 1;
                                 return pos.to_string().chars().next();
                             }
                         }
@@ -53,8 +53,11 @@ pub fn run2(input: &str) -> u32 {
         });
 
         let digits = it.collect::<Vec<_>>();
-        let num_str = format!("{}{}", digits.first().unwrap(), digits.last().unwrap());
-        total += num_str.parse::<u32>().unwrap();
+        let first_digit = digits.first().expect("should be a valid digit");
+        let second_digit = digits.last().expect("should be a valid digit");
+        let num_str = format!("{first_digit}{second_digit}");
+        let nn = num_str.parse::<u32>().expect("should be valid 2 digit number");
+        total += nn
     }
 
     total
@@ -70,7 +73,13 @@ mod tests {
 pqr3stu8vwx
 a1b2c3d4e5f
 treb7uchet";
-        assert_eq!(run1(input), 142);
+        let vals = vec![
+            12, 38, 15, 77,
+        ];
+        assert_eq!(extract_digit_total(input), 142);
+        for (pos, ln) in input.lines().enumerate() {
+            assert_eq!(vals[pos], extract_digit_total(&ln));
+        }
     }
 
     #[test]
@@ -82,6 +91,13 @@ xtwone3four
 4nineeightseven2
 zoneight234
 7pqrstsixteen";
-        assert_eq!(run2(input), 281);
+        let vals = vec![
+            29, 83, 13, 24, 42, 14, 76,
+        ];
+        assert_eq!(extract_digit_word_total(input), 281);
+        for (pos, ln) in input.lines().enumerate() {
+            assert_eq!(vals[pos], extract_digit_word_total(&ln));
+        }
+        assert_eq!(extract_digit_word_total("twone"), 21);
     }
 }

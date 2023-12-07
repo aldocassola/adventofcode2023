@@ -12,7 +12,7 @@ fn main() {
 
     let filename = args[1].clone();
     let contents = fs::read_to_string(&filename).expect("reading input");
-    let total = day1::run1(&contents);
+    let total = day1::extract_digit_total(&contents);
 
     println!("{}", total);
 }
